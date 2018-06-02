@@ -21,8 +21,12 @@
                 <td><c:out value="${todo.title}"/></td>
                 <td><c:out value="${todo.description}"/></td>
                 <td><c:out value="${todo.startDate}"/></td>
+                <td><a href="#">Edytuj</a> | <a href="#">Szczegóły</a> | <a href="#">Usuń</a> </td>
             </tr>
         </c:forEach>
         </tbody>
     </table>
+
+    <button class="btn btn-primary">Dodaj</button>
+
 </t:wrapper>
