@@ -43,6 +43,7 @@ public class TodoServlet extends HttpServlet {
         todoItem.setDescription(req.getParameter("description"));
         //todoItem.setStartDate(req.getParameter("date"));
         todoService.save(todoItem);
+        req.getSession().setAttribute("todo_created",true);
         resp.sendRedirect("/todo");
     }
 }
