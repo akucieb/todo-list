@@ -3,6 +3,7 @@ package pl.sda.poznan.repository;
 import java.util.List;
 import java.util.Optional;
 import javax.persistence.EntityManager;
+
 import pl.sda.poznan.model.TodoItem;
 
 public class TodoRepository {
@@ -32,6 +33,4 @@ public class TodoRepository {
         entityManager.persist(todoItem);
         entityManager.getTransaction().commit();
     }
-
-
 }

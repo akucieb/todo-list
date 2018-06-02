@@ -6,12 +6,16 @@
 
 <t:wrapper>
     <table class="table table-bordered table-striped">
+        <br><br>
+        <h1>Moja lista todo</h1>
+        <br><br>
         <thead>
         <tr>
             <th>Id</th>
             <th>Tytuł</th>
             <th>Opis</th>
             <th>Data</th>
+            <th>Działanie</th>
         </tr>
         </thead>
         <tbody>
@@ -21,12 +25,13 @@
                 <td><c:out value="${todo.title}"/></td>
                 <td><c:out value="${todo.description}"/></td>
                 <td><c:out value="${todo.startDate}"/></td>
-                <td><a href="#">Edytuj</a> | <a href="#">Szczegóły</a> | <a href="#">Usuń</a> </td>
+                <td><a href="#">Edytuj</a> | <a href="#">Szczegóły</a> | <a href="#">Usuń</a></td>
             </tr>
         </c:forEach>
         </tbody>
     </table>
+    <br><br>
 
-    <button class="btn btn-primary">Dodaj</button>
+    <a href="/todo/create" class="btn btn-primary"/>Dodaj</a>
 
 </t:wrapper>
