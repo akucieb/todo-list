@@ -3,6 +3,8 @@ package pl.sda.poznan.repository;
 import java.util.List;
 import java.util.Optional;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.Query;
 
 import pl.sda.poznan.model.TodoItem;
 
@@ -21,7 +23,15 @@ public class TodoRepository {
     }
 
     public Optional<TodoItem> getById(Long id) {
-        return Optional.empty();
+        Query query = entityManager
+                .createQuery("select td from TodoItem td where td.id = :id", TodoItem.class);
+        query.setParameter("id", id);
+        try {
+            TodoItem singleResult = (TodoItem) query.getSingleResult();
+            return Optional.of(singleResult);
+        } catch (NoResultException e) {
+            return Optional.empty();
+        }
     }
 
     public Optional<TodoItem> getByTitle(String title) {

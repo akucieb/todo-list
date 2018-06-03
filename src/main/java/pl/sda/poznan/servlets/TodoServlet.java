@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "TodoServlet", urlPatterns = {"/todo", "/todo/create"})
+@WebServlet(name = "TodoServlet", urlPatterns = {"/todo", "/todo/create", "/todo/delete"})
 public class TodoServlet extends HttpServlet {
 
     private TodoService todoService;
@@ -29,21 +29,32 @@ public class TodoServlet extends HttpServlet {
         String path = req.getServletPath();
         if (path.equals("/todo/create")) {
             req.getRequestDispatcher("/todo/create.jsp").forward(req, resp);
+        } else if (path.equals("/todo/delete")) {
+            String id = req.getParameter("id");
+            //todo : try-catch TodoNotPresentException
+            TodoItem toDelete = todoService.getById(Long.parseLong(id));
+            System.out.println("Item to delete: " + toDelete.getTitle());
+            //todo forward to confirm delete page
+
         } else {
             List<TodoItem> allTodos = todoService.getAllTodos();
             req.setAttribute("todos", allTodos);
-            req.getRequestDispatcher("/todo/index.jsp").forward(req, resp);
+            req
+                    .getRequestDispatcher("/todo/index.jsp")
+                    .forward(req, resp);
         }
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
         TodoItem todoItem = new TodoItem();
         todoItem.setTitle(req.getParameter("title"));
         todoItem.setDescription(req.getParameter("description"));
-        //todoItem.setStartDate(req.getParameter("date"));
+        // todo: parse date from request
+        //    todoItem.setStartDate();
         todoService.save(todoItem);
-        req.getSession().setAttribute("todo_created",true);
+        req.getSession().setAttribute("todo_created", true);
         resp.sendRedirect("/todo");
     }
 }

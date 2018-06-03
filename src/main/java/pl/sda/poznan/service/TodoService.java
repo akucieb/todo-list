@@ -20,4 +20,8 @@ public class TodoService {
     public void save(TodoItem todoItem) {
         this.todoRepository.save(todoItem);
     }
+
+    public TodoItem getById(Long id) {
+        return todoRepository.getById(id).orElseThrow(RuntimeException::new);
+    }
 }
