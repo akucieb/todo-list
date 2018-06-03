@@ -52,4 +52,10 @@ public class TodoRepository {
         entityManager.getTransaction().commit();
         return deletedNumber == 1;
     }
+
+    public void update(TodoItem todoItem) {
+        entityManager.getTransaction().begin();
+        entityManager.merge(todoItem);
+        entityManager.getTransaction().commit();
+    }
 }

@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "TodoServlet", urlPatterns = {"/todo", "/todo/create", "/todo/delete"})
+@WebServlet(name = "TodoServlet", urlPatterns = {"/todo", "/todo/create", "/todo/delete", "/todo/edit"})
 public class TodoServlet extends HttpServlet {
 
     private TodoService todoService;
@@ -35,6 +35,11 @@ public class TodoServlet extends HttpServlet {
             TodoItem toDelete = todoService.getById(Long.parseLong(id));
             req.setAttribute("itemToDelete", toDelete);
             req.getRequestDispatcher("/todo/delete.jsp").forward(req, resp);
+        } else if (path.equals("/todo/edit")) {
+            String id = req.getParameter("id");
+            TodoItem toEdit = todoService.getById(Long.parseLong(id));
+            req.setAttribute("itemToEdit", toEdit);
+            req.getRequestDispatcher("/todo/edit.jsp").forward(req, resp);
         } else {
             List<TodoItem> allTodos = todoService.getAllTodos();
             req.setAttribute("todos", allTodos);
@@ -60,8 +65,14 @@ public class TodoServlet extends HttpServlet {
             boolean result = this.todoService.delete(Long.parseLong(id));
             req.getSession().setAttribute("delete_result", result);
             resp.sendRedirect("/todo");
-
+        } else if (servletPath.equals("/todo/edit")) {
+            TodoItem todoItem = new TodoItem();
+            todoItem.setId(Long.parseLong(req.getParameter("id")));
+            todoItem.setTitle(req.getParameter("title"));
+            todoItem.setDescription(req.getParameter("description"));
+            this.todoService.update(todoItem);
+            req.getSession().setAttribute("update_result", true);
+            resp.sendRedirect("/todo");
         }
-
     }
 }
