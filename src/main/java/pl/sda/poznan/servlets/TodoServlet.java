@@ -33,28 +33,35 @@ public class TodoServlet extends HttpServlet {
             String id = req.getParameter("id");
             //todo : try-catch TodoNotPresentException
             TodoItem toDelete = todoService.getById(Long.parseLong(id));
-            System.out.println("Item to delete: " + toDelete.getTitle());
-            //todo forward to confirm delete page
-
+            req.setAttribute("itemToDelete", toDelete);
+            req.getRequestDispatcher("/todo/delete.jsp").forward(req, resp);
         } else {
             List<TodoItem> allTodos = todoService.getAllTodos();
             req.setAttribute("todos", allTodos);
-            req
-                    .getRequestDispatcher("/todo/index.jsp")
-                    .forward(req, resp);
+            req.getRequestDispatcher("/todo/index.jsp").forward(req, resp);
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        TodoItem todoItem = new TodoItem();
-        todoItem.setTitle(req.getParameter("title"));
-        todoItem.setDescription(req.getParameter("description"));
-        // todo: parse date from request
-        //    todoItem.setStartDate();
-        todoService.save(todoItem);
-        req.getSession().setAttribute("todo_created", true);
-        resp.sendRedirect("/todo");
+        String servletPath = req.getServletPath();
+        if (servletPath.equals("/todo/create")) {
+            TodoItem todoItem = new TodoItem();
+            todoItem.setTitle(req.getParameter("title"));
+            todoItem.setDescription(req.getParameter("description"));
+            // todo: parse date from request
+            //    todoItem.setStartDate();
+            todoService.save(todoItem);
+            req.getSession().setAttribute("todo_created", true);
+            resp.sendRedirect("/todo");
+        } else if (servletPath.equals("/todo/delete")) {
+            String id = req.getParameter("id");
+            boolean result = this.todoService.delete(Long.parseLong(id));
+            req.getSession().setAttribute("delete_result", result);
+            resp.sendRedirect("/todo");
+
+        }
+
     }
 }

@@ -4,7 +4,7 @@
 <c:wrapper>
 
     <h1>Dodaj nowe zadanie</h1>
-    <form action="/todo" method="post" class="form-horizontal">
+    <form action="/todo/create" method="post" class="form-horizontal">
 
         <div class="form-group">
             <label for="title" class="control-label col-md-2">Tytuł</label>

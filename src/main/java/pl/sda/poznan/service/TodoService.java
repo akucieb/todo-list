@@ -2,6 +2,7 @@ package pl.sda.poznan.service;
 
 
 import java.util.List;
+
 import pl.sda.poznan.model.TodoItem;
 import pl.sda.poznan.repository.TodoRepository;
 
@@ -23,5 +24,9 @@ public class TodoService {
 
     public TodoItem getById(Long id) {
         return todoRepository.getById(id).orElseThrow(RuntimeException::new);
+    }
+
+    public boolean delete(Long id) {
+        return this.todoRepository.delete(id);
     }
 }
